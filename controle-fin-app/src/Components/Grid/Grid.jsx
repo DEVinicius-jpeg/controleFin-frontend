@@ -1,13 +1,19 @@
 import React from "react";
 import GridItem from "../GridItem/GridItem";
 import * as C from "./Style";
+import axios from "axios";
 
 
 function Grid({itens, setItens}){
     const onDelete = (ID) =>{
-        const newArray = itens.filter((transction)=> transction.id !== ID);
-        setItens(newArray);
-        localStorage.setItem("transactions", JSON.stringify(newArray));
+        const urlDelete = `http://localhost:3000/api/v1/payments/${ID}`
+        
+        axios.delete(urlDelete)
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => console.log(error))
+
     };
 
     return(

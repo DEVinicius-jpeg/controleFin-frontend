@@ -3,13 +3,24 @@ import GlobalStyle from "./Styles/global";
 import Header from "./Components/Header/Header";
 import Resume from "./Components/Resume";
 import Form from "./Components/Form/Form";
+import axios from "axios";
 
 function App() {
-  const data = localStorage.getItem("transactions");
-  const [transactionList, setTransactionList] = useState(
-    data ? JSON.parse(data) : []
-  );
+  const [transactionList, setTransactionList] = useState([]);
+  const url = "http://localhost:3000/api/v1/payments"
 
+  useEffect(() => {
+    const getData = () => {
+      axios.get(url)
+        .then(response => {
+          setTransactionList(response.data.payments);
+        })
+        .catch(error => console.log(error));
+    };
+  
+    getData();
+  }, []);
+  
   const [income, setIncome] = useState(0);
   const [expense, setExpense] = useState(0);
   const [total, setTotal] = useState(0);
@@ -35,11 +46,14 @@ function App() {
   }, [transactionList])
 
   const handleAdd = (transaction) =>{
-    const newArrayTransactions = [...transactionList, transaction];
+    axios.post(url, transaction)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
 
-    setTransactionList(newArrayTransactions);
-
-    localStorage.setItem("transactions", JSON.stringify(newArrayTransactions));
   }
   
   return (

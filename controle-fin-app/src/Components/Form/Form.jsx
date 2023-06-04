@@ -7,8 +7,6 @@ function Form({handleAdd, setTransactionList, transactionList}){
     const [amount, setAmount] = useState("");
     const [isExpense, setExpense] = useState(false);
 
-    const generateID = () => Math.round(Math.random() * 1000);
-
     const handleSave = () =>{
         if(!desc || !amount){
             alert("Infome a descrição e o valor!");
@@ -19,8 +17,7 @@ function Form({handleAdd, setTransactionList, transactionList}){
         }
 
         const transaction = {
-            id: generateID(),
-            desc: desc,
+            description: desc,
             amount: amount,
             expense: isExpense,
         };
@@ -30,6 +27,8 @@ function Form({handleAdd, setTransactionList, transactionList}){
         setDesc("");
         setAmount("");
         setExpense("");
+
+        location.reload();
     };
 
     return(
